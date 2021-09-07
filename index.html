@@ -77,11 +77,11 @@
 				const targetTime = Date.now() + seconds * 1000;
 
 				interval = setInterval(() => {
+					displayTimer.innerHTML = Math.round((targetTime - Date.now()) / 1000);
 					if (targetTime - Date.now() < 0) {
 						continuousBeep(2);
 						stopTimer();
 					}
-					displayTimer.innerHTML = Math.round((targetTime - Date.now()) / 1000);
 				}, 1000);
 			}, 3000);
 		}
