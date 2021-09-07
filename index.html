@@ -74,7 +74,7 @@
 			if (pressed === false) {
 				pressed = true;
 				displayTimer.innerHTML = seconds;
-				continuousBeep(3);
+				continuousBeep(4);
 				setTimeout(() => {
 					const targetTime = Date.now() + seconds * 1000;
 
@@ -83,7 +83,7 @@
 							(targetTime - Date.now()) / 1000
 						);
 						if (targetTime - Date.now() < 0) {
-							continuousBeep(2);
+							continuousBeep(4);
 							stopTimer();
 						}
 					}, 1000);
