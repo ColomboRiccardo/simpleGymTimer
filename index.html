@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Countdown timer</title>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+			* {
+				box-sizing: border-box;
+				margin: 0px;
+				padding: 0px;
+				font-size: 20px;
+				font-family: 'Roboto';
+			}
+
+			body {
+				display: flex;
+				margin: auto;
+				height: 100vh;
+				width: 100vw;
+			}
+
+			.container {
+				margin: auto;
+				width: 400px;
+				height: 400px;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+			}
+
+			.container > div {
+				height: 3em;
+				margin: 0.5em;
+			}
+			h1 {
+				font-size: 2em;
+				font-weight: 800;
+			}
+			#timer {
+				font-size: 3em;
+			}
+			button {
+				margin: 1em;
+				width: 4em;
+				height: 4em;
+				border-radius: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<div>
+				<h1>Countdown Timer</h1>
+			</div>
+			<div>
+				<p id="timer">00</p>
+			</div>
+			<div id="buttons">
+				<button onClick="setTimer(30)">30s</button>
+				<button onClick="setTimer(90)">1.30s</button>
+				<button onClick="stopTimer()">Reset</button>
+			</div>
+		</div>
+	</body>
+	<script>
+		const displayTimer = document.getElementById('timer');
+
+		async function setTimer(seconds) {
+			displayTimer.innerHTML = seconds;
+			continuousBeep(3);
+			setTimeout(() => {
+				const targetTime = Date.now() + seconds * 1000;
+
+				interval = setInterval(() => {
+					if (targetTime - Date.now() < 0) {
+						continuousBeep(2);
+						stopTimer();
+					}
+					displayTimer.innerHTML = Math.round((targetTime - Date.now()) / 1000);
+				}, 1000);
+			}, 3000);
+		}
+
+		function stopTimer() {
+			clearInterval(interval);
+			displayTimer.innerHTML = '00';
+		}
+
+		function continuousBeep(times) {
+			let i = 1;
+			beepInterval = setInterval(() => {
+				beep();
+				if (i === times) {
+					clearInterval(beepInterval);
+				}
+				i++;
+			}, 800);
+		}
+
+		function beep(times) {
+			const audio_ctx = new AudioContext();
+
+			let oscillator = audio_ctx.createOscillator();
+			let gain = audio_ctx.createGain();
+
+			oscillator.connect(gain);
+			oscillator.frequency.value = 1000;
+			oscillator.type = 'square';
+
+			gain.connect(audio_ctx.destination);
+
+			gain.gain.value = 0.2;
+
+			oscillator.start(audio_ctx.currentTime);
+			oscillator.stop(audio_ctx.currentTime + 0.1);
+		}
+	</script>
+</html>
