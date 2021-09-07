@@ -71,6 +71,7 @@
 		const displayTimer = document.getElementById('timer');
 
 		async function setTimer(seconds) {
+			stopTimer();
 			displayTimer.innerHTML = seconds;
 			continuousBeep(3);
 			setTimeout(() => {
@@ -99,7 +100,7 @@
 					clearInterval(beepInterval);
 				}
 				i++;
-			}, 800);
+			}, 900);
 		}
 
 		function beep(times) {
@@ -114,10 +115,10 @@
 
 			gain.connect(audio_ctx.destination);
 
-			gain.gain.value = 0.2;
+			gain.gain.value = 0.5;
 
 			oscillator.start(audio_ctx.currentTime);
-			oscillator.stop(audio_ctx.currentTime + 0.1);
+			oscillator.stop(audio_ctx.currentTime + 0.2);
 		}
 	</script>
 </html>
