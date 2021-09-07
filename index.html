@@ -63,33 +63,40 @@
 			<div id="buttons">
 				<button onClick="setTimer(30)">30s</button>
 				<button onClick="setTimer(90)">1.30s</button>
-				<button onClick="stopTimer()">Reset</button>
 			</div>
 		</div>
 	</body>
 	<script>
 		const displayTimer = document.getElementById('timer');
+		let pressed = false;
 
 		async function setTimer(seconds) {
-			stopTimer();
-			displayTimer.innerHTML = seconds;
-			continuousBeep(3);
-			setTimeout(() => {
-				const targetTime = Date.now() + seconds * 1000;
+			if (pressed === false) {
+				pressed = true;
+				displayTimer.innerHTML = seconds;
+				continuousBeep(3);
+				setTimeout(() => {
+					const targetTime = Date.now() + seconds * 1000;
 
-				interval = setInterval(() => {
-					displayTimer.innerHTML = Math.round((targetTime - Date.now()) / 1000);
-					if (targetTime - Date.now() < 0) {
-						continuousBeep(2);
-						stopTimer();
-					}
-				}, 1000);
-			}, 3000);
+					interval = setInterval(() => {
+						displayTimer.innerHTML = Math.round(
+							(targetTime - Date.now()) / 1000
+						);
+						if (targetTime - Date.now() < 0) {
+							continuousBeep(2);
+							stopTimer();
+						}
+					}, 1000);
+				}, 3000);
+			} else {
+				stopTimer();
+			}
 		}
 
 		function stopTimer() {
 			clearInterval(interval);
 			displayTimer.innerHTML = '00';
+			pressed = false;
 		}
 
 		function continuousBeep(times) {
